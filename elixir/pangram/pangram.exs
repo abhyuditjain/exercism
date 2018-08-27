@@ -14,5 +14,14 @@ defmodule Pangram do
 
   @spec pangram?(String.t()) :: boolean
   def pangram?(sentence) do
+    count =
+      sentence
+      |> String.upcase()
+      |> String.to_charlist()
+      |> Stream.filter(&(&1 >= 65 && &1 <= 90))
+      |> Stream.uniq()
+      |> Enum.count()
+
+    count === 26
   end
 end
