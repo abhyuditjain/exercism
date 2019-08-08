@@ -4,41 +4,32 @@ package scrabble
 import "strings"
 
 // byte = uint8
-var scoreMap = map[byte]int{
-	'A': 1,
-	'E': 1,
-	'I': 1,
-	'O': 1,
-	'U': 1,
-	'L': 1,
-	'N': 1,
-	'R': 1,
-	'S': 1,
-	'T': 1,
-	'D': 2,
-	'G': 2,
-	'B': 3,
-	'C': 3,
-	'M': 3,
-	'P': 3,
-	'F': 4,
-	'H': 4,
-	'V': 4,
-	'W': 4,
-	'Y': 4,
-	'K': 5,
-	'J': 8,
-	'X': 8,
-	'Q': 10,
-	'Z': 10,
+var scoreMap = make(map[rune]int)
+
+func init() {
+	classes := map[string]int{
+		"aeioulnrst": 1,
+		"dg":         2,
+		"bcmp":       3,
+		"fhvwy":      4,
+		"k":          5,
+		"jx":         8,
+		"qz":         10,
+	}
+
+	for letters, score := range classes {
+		for _, letter := range letters {
+			scoreMap[letter] = score
+		}
+	}
 }
 
 // Score gives the score for a word
 func Score(word string) int {
 	score := 0
 
-	for _, v := range strings.ToUpper(word) {
-		score += scoreMap[uint8(v)]
+	for _, v := range strings.ToLower(word) {
+		score += scoreMap[v]
 	}
 
 	return score
